@@ -6,12 +6,12 @@ namespace Blazor.Diagrams.Core.Models.Base
     // I believe it makes sense since if you click to move something then you're also selecting
     public abstract class MovableModel : SelectableModel
     {
-        public MovableModel(Point? position = null)
+        protected MovableModel(Point? position = null)
         {
             Position = position ?? Point.Zero;
         }
 
-        public MovableModel(string id, Point? position = null) : base(id)
+		protected MovableModel(string id, Point? position = null) : base(id)
         {
             Position = position ?? Point.Zero;
         }
@@ -19,5 +19,6 @@ namespace Blazor.Diagrams.Core.Models.Base
         public Point Position { get; set; }
 
         public virtual void SetPosition(double x, double y) => Position = new Point(x, y);
+        public virtual void EndMovement() { /*Do nothing*/ }
     }
 }

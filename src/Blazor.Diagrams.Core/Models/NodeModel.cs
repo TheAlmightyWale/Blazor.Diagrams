@@ -14,6 +14,7 @@ namespace Blazor.Diagrams.Core.Models
 
         public event Action<NodeModel>? SizeChanged;
         public event Action<NodeModel>? Moving;
+        public event Action<NodeModel>? MoveEnded;
 
         public NodeModel(Point? position = null, RenderLayer layer = RenderLayer.HTML,
             ShapeDefiner? shape = null) : base(position)
@@ -100,7 +101,12 @@ namespace Blazor.Diagrams.Core.Models
             Moving?.Invoke(this);
         }
 
-        public virtual void UpdatePositionSilently(double deltaX, double deltaY)
+		public override void EndMovement()
+		{
+			MoveEnded?.Invoke(this);
+		}
+
+		public virtual void UpdatePositionSilently(double deltaX, double deltaY)
         {
             base.SetPosition(Position.X + deltaX, Position.Y + deltaY);
             UpdatePortPositions(deltaX, deltaY);

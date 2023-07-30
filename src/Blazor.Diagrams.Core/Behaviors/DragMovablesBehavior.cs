@@ -78,6 +78,15 @@ namespace Blazor.Diagrams.Core.Behaviors
             _initialPositions = null;
             _lastClientX = null;
             _lastClientY = null;
+
+            //movement has ended, send events
+            foreach (var sm in Diagram.GetSelectedModels())
+            {
+                if (!(sm is MovableModel node) || node.Locked)
+                    continue;
+
+                node.EndMovement();
+            }
         }
 
         private double ApplyGridSize(double n)
