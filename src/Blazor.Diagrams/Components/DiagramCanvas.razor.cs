@@ -11,6 +11,8 @@ namespace Blazor.Diagrams.Components
 {
     public partial class DiagramCanvas : IDisposable
     {
+        private string prevDiagramId = String.Empty;
+
         [CascadingParameter]
         public Diagram Diagram { get; set; }
 
@@ -36,6 +38,16 @@ namespace Blazor.Diagrams.Components
 
             _reference = DotNetObjectReference.Create(this);
             Diagram.Changed += OnDiagramChanged;
+        }
+
+        protected override void OnParametersSet()
+        {
+            //Need to account for when the entire diagram changes, not just it's internals
+            if (Diagram.Id != prevDiagramId ) 
+            {
+                prevDiagramId = Diagram.Id;
+                OnDiagramChanged();
+            }
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
